@@ -1,0 +1,106 @@
+body {
+	background-color: #E0E2E4;
+	font: 20px Hoefler Text, bodyfont, serif;
+	color: #333;
+    line-height: 30px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Helvetica, sans-serif;
+    font-weight:normal;
+}
+
+h1 {
+    font-size: 30px;
+}
+h2 {
+    font-size: 20px;
+}
+
+img { vertical-align: middle; }
+img { border:none; }
+img a { border:none; }
+
+blockquote {
+    border-left: 1px solid #A5ABAB;
+    margin: 0px;
+    padding: 0 12px 0 12px;
+}
+
+p {
+    line-height: 30px;
+    margin:10px auto 20px;
+    text-indent: 0px;
+}
+
+a {color: #333; text-decoration: none; }
+a:visited {color: #333; text-decoration: none;}
+a:hover {color: #999; text-decoration: none;}
+
+.entry { text-align: justify; }
+.entry a:link {color: #303030; text-decoration: none; border-bottom: 1px solid #C0C0C0;}
+.entry a:visited {color: #303030; text-decoration: none; border-bottom: 1px solid #C0C0C0;}
+.entry a:hover {color: #999; text-decoration: none; border-bottom: 1px solid #C0C0C0; }
+.entry img {
+    box-shadow: 0px 0px 10px 0px #000;
+    margin: 10px auto;
+    border-radius: 5px;
+}
+
+ul, ol{ padding: 10px 0px 20px 64px; margin:0;}
+li{ line-height: 30px; }
+
+#container {
+    min-width: 400px;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+#container img {
+    max-width: 100%;
+}
+
+#container span.gallery img {
+    max-width: 100px;
+    box-shadow: none;
+    margin-right: 5px;
+    padding: 5px;
+    border: 1px solid #BBB;
+    background-color:#FFF;
+    cursor: pointer;
+}
+#content span.gallery img.fullImage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 600px;
+    box-shadow: 0px 0px 10px 0px #000;
+}
+
+.post {
+    border-bottom: 1px solid;
+}
+
+.postInfo {
+    color:#BBB;
+    font-size: 15px;
+    text-align: right;
+}
+
+pre {
+    padding: 5px;
+    border: 1px solid #CCC;
+    background-color:#F5F5F5;
+    line-height: 20px;
+    font-size: 15px;
+    overflow: auto;
+}
+
+#archive h1 {
+    font-size: 20px;
+}
+
+#archive span.date {
+    color:#BBB;
+    font-size: 15px;
+}

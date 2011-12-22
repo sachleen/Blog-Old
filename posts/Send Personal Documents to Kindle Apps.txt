@@ -1,0 +1,16 @@
+Send Personal Documents to Kindle Apps
+December 17, 2011
+kindle
+
+Since the 3.3 Software Update for Kindle, Amazon has enabled support for 
+syncing personal documents through Whispersync. The only thing missing, 
+however, is that personal documents do not sync to Kindle Apps (iOS app, 
+for example).
+
+I've been using a workaround I discovered to send documents to my iPhone 
+so I can read them on that, as well as my Kindle. This does **not**, 
+however, sync your progress or notes. This method only allows you to 
+make the documents accessable on the other apps. For me, that's good enough, I just have look up the last location and go to 
+it before I start reading.
+
+![](content/send-personal-1.png)

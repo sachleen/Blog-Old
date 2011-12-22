@@ -1,0 +1,47 @@
+<!DOCTYPE HTML> 
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>sachleen</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, print" />
+<script src="js/jquery.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+$(function() {
+    gallery($(".gallery img"));
+});
+</script>
+
+</head>
+<body>
+
+<div id="container">
+	<div id="content">
+        {loop="posts"}
+        <div class="post">
+            <h1><a href="{$value.slug}.html" rel="bookmark" title="{$value.title}"><strong>{$value.title}</strong></a></h1>
+            <div class="entry">
+                {$value.content}
+            </div>
+            <div class="postInfo">
+                {$value.date}
+            </div>
+        </div>
+        {/loop}
+        
+        <div id="archive">
+        {loop="archive"}
+            <h1><a href="{$value.slug}.html" rel="bookmark" title="{$value.title}"><strong>{$value.title}</strong></a> <span class="date">{$value.date}</span></h1>
+        {/loop}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+var pageTracker = _gat._getTracker("UA-2893329-1");
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>
