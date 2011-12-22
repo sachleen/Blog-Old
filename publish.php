@@ -1,42 +1,46 @@
 <?php
-    // Maximum full-length posts to show on home page
-    $posts_on_home = 3;
-    
+    /* Configuration */
+    $posts_on_home = 3; // Maximum full-length posts to show on home page
+    $publish_dir = '../public_html/blog/';
     /* End Configuration */
     
     include_once "lib/markdown.php";
-    include_once "lib/rain.tpl.class.php";
     include_once "lib/functions.php";
-    
-    $publish_dir = '../public_html/blog/';
-    
-    raintpl::configure("base_url", 'http://localhost/blog/public_html/blog/' );
-	raintpl::configure("tpl_dir", "template/" );
-	raintpl::configure("cache_dir", "tmp/" );
-    $tpl = new RainTPL;
     
     echo "\n";
     
-    // Make HTML for each posts
-    $posts = array();
+    /*
+     * Iterates over all text files in the posts/ directory and generates
+     * the HTML output for each post.
+     */
+    $postData = array();
     foreach(glob('posts/*.txt') as $file) {
-        $fh = fopen($file, 'r');
-        $theData = fread($fh, filesize($file));
-        fclose($fh);
+        $post = parse_file($file);
         
-        $parts = explode("\n", $theData, 4);
-        $post = array();
-        $post['title'] = $parts[0];
-        $post['slug'] = create_slug($parts[0]);
-        $post['date_raw'] = $parts[1];
-        $post['date'] = date('M j, Y', strtotime($parts[1]));
-        $post['tags'] = explode(',', $parts[2]);
-        $post['content'] = Markdown($parts[3]);
-        $posts[] = $post;
+        /*
+         * Store the post data (except for the actual post) in an array
+         * for ease of access when building the index.
+         */
+        $postData[] = array("file"      => $file,
+                            "title" => $post['title'],
+                            "slug" => $post['slug'],
+                            "date_raw" => $post['date_raw'],
+                            "date" => $post['date'],
+                            "tags" => $post['tags']
+                           );
         
-        $tpl->assign("post", $post);
-        $html = $tpl->draw('singlePost', $return_string=true);
+        /*
+         * Generate template for this post
+         */
+        ob_start();
+        include('template/singlePost.html');
+        $html = ob_get_contents();
+        ob_end_clean();
         
+        /*
+         * Create a file in the publish directory for this post
+         * If a file exists already, it will be overwritten.
+         */
         $publishFile = $publish_dir . $post['slug'] . ".html";
         $fh = fopen($publishFile, 'w') or die("can't open file");
         fwrite($fh, $html);
@@ -45,18 +49,46 @@
         printf("Published: %s\n", $post['title']);
     }
     
-    // Sort posts by date
-    usort($posts, "sortPosts");
+    /*
+     * Sorts the posts array by post date.
+     * Most recent post first.
+     */
+    usort($postData, "sortPosts");
     function sortPosts($a,$b) {
         return strtotime($a['date_raw']) < strtotime($b['date_raw']);
     }
     
-    // Publish Index
-    
+    /*
+     * Publish the blog index
+     *
+     * If the GET paramater 'noindex' is specified, this step is skipped.
+     * Although this script is meant to be run from the command line, I went
+     * with the GET paramater instead of argv to allow it to be run from a 
+     * web browser as well.
+     */
     if(!isset($_GET['noindex'])) {
-        $tpl->assign("posts", array_slice($posts, 0, $posts_on_home));
-        $tpl->assign("archive", array_slice($posts, $posts_on_home, count($posts)));
-        $html = $tpl->draw('index', $return_string=true);
+        /*
+         * Split up the posts array into parts for the full-length posts
+         * and the archive. For the full-length posts, we have to get the
+         * post content from the original file.
+         */
+        $posts = array_slice($postData, 0, $posts_on_home);
+        $index_posts = array();
+        foreach($posts as $post) {
+            $index_posts[] = parse_file($post['file']);
+        }
+        
+        /*
+         * The data for the other posts is already in the $postData array so no
+         * processing goes on here.
+         */
+        $archive = array_slice($postData, $posts_on_home, count($postData));
+        
+        ob_start();
+        include('template/index.html');
+        $html = ob_get_contents();
+        ob_end_clean();
+        
         $publishFile = $publish_dir . "/index.html";
         $fh = fopen($publishFile, 'w') or die("can't open file");
         fwrite($fh, $html);
@@ -65,11 +97,19 @@
     }
     
     echo "\n";
-    // Copy the content directory
+    /*
+     * Copies the posts/content directory to the publish directory.
+     * Content is duplicated but since these files are not in the public_html,
+     * there really isn't any other option.
+     */
     copy_directory('posts/content', $publish_dir . 'content');
     echo "Copied content directory\n";
-    // Copy the template directory
+    
+    /*
+     * Copy the template directory
+     */
     copy_directory('template', $publish_dir . 'template');
     echo "Copied template directory\n";
+    
     echo "Done!\n\n";
 ?>

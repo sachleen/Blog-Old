@@ -2,9 +2,9 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>sachleen</title>
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, print" />
-<script src="js/jquery.min.js"></script>
-<script src="js/main.js"></script>
+<link rel="stylesheet" href="template/css/style.css" type="text/css" media="screen, print" />
+<script src="template/js/jquery.min.js"></script>
+<script src="template/js/main.js"></script>
 <script>
 $(function() {
     gallery($(".gallery img"));
@@ -16,22 +16,22 @@ $(function() {
 
 <div id="container">
 	<div id="content">
-        {loop="posts"}
+        <? foreach($index_posts as $post): ?>
         <div class="post">
-            <h1><a href="{$value.slug}.html" rel="bookmark" title="{$value.title}"><strong>{$value.title}</strong></a></h1>
+            <h1><a href="<? echo($post['slug']); ?>.html" rel="bookmark" title="<? echo($post['title']); ?>"><strong><? echo($post['title']); ?></strong></a></h1>
             <div class="entry">
-                {$value.content}
+                <? echo($post['content']); ?>
             </div>
             <div class="postInfo">
-                {$value.date}
+                <? echo($post['date']); ?>
             </div>
         </div>
-        {/loop}
+        <? endforeach; ?>
         
         <div id="archive">
-        {loop="archive"}
-            <h1><a href="{$value.slug}.html" rel="bookmark" title="{$value.title}"><strong>{$value.title}</strong></a> <span class="date">{$value.date}</span></h1>
-        {/loop}
+        <? foreach($archive as $post): ?>
+            <h1><a href="<? echo($post['slug']); ?>.html" rel="bookmark" title="<? echo($post['title']); ?>"><strong><? echo($post['title']); ?></strong></a> <span class="date"><? echo($post['date']); ?></span></h1>
+        <? endforeach; ?>
         </div>
     </div>
 </div>

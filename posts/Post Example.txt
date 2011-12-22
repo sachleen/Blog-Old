@@ -1,0 +1,5 @@
+Post Example
+December 21, 2011
+tag1,tag2
+
+Post content goes here.

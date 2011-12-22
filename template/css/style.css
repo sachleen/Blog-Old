@@ -14,7 +14,8 @@ h1 {
     font-size: 30px;
 }
 h2 {
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: bold;
 }
 
 img { vertical-align: middle; }
@@ -103,4 +104,25 @@ pre {
 #archive span.date {
     color:#BBB;
     font-size: 15px;
+}
+
+sup {
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+code { font-size: 15px; }
+
+.footnotes {
+    border-top: 1px dashed #CCC;
+    padding-top: 5px;
+    text-align: left;
+}
+.footnotes ol {
+    padding: 0;
+    padding-left: 40px;
+}
+.footnotes ol li {
+    font-size: 14px;
+    line-height: 20px;
 }
