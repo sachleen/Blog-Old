@@ -1,7 +1,7 @@
 <?php
     /* Configuration */
     $posts_on_home = 3; // Maximum full-length posts to show on home page
-    $publish_dir = '../public_html/blog/';
+    $publish_dir = '../../public_html/blog/';
     /* End Configuration */
     
     include_once "lib/markdown.php";
@@ -16,24 +16,26 @@
     $postData = array();
     foreach(glob('posts/*.txt') as $file) {
         $post = parse_file($file);
-        
         /*
          * Store the post data (except for the actual post) in an array
          * for ease of access when building the index.
          */
-        $postData[] = array("file"      => $file,
-                            "title" => $post['title'],
-                            "slug" => $post['slug'],
-                            "date_raw" => $post['date_raw'],
-                            "date" => $post['date'],
-                            "tags" => $post['tags']
-                           );
+        if($post['index'] == 'true') {
+            $postData[] = array(
+                'file' => $file,
+                'title' => $post['title'],
+                'date' => $post['date'],
+                'date_formatted' => date('M j, Y', strtotime($post['date'])),
+                'tags' => $post['tags'],
+                'slug' => $post['slug']
+            );
+        }
         
         /*
          * Generate template for this post
          */
         ob_start();
-        include('template/singlePost.html');
+        include('template/' . $post['template'] . '.html');
         $html = ob_get_contents();
         ob_end_clean();
         
@@ -55,7 +57,7 @@
      */
     usort($postData, "sortPosts");
     function sortPosts($a,$b) {
-        return strtotime($a['date_raw']) < strtotime($b['date_raw']);
+        return strtotime($a['date']) < strtotime($b['date']);
     }
     
     /*

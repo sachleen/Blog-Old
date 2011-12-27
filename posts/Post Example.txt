@@ -1,5 +1,6 @@
-Post Example
-December 21, 2011
-tag1,tag2
+Title: Post Example
+Date: December 21, 2011
+Tags: tag1,tag2
+Template: post
 
 Post content goes here.

@@ -6,30 +6,34 @@
  * @return array Returns an array with the parts of the post:
  *               title
  *               slug
- *               date_raw (the date as it was written in the post)
- *               date (the date converted into mmm dd, yyyy format)
+ *               date (the date as it was written in the post)
+ *               date_formatted (the date converted into mmm dd, yyyy format)
  *               tags (an array of tags specified in the post)
  *               content (post body converted from Markdown to HTML)
  */
 function parse_file($file) {
-    $fh = fopen($file, 'r');
-    $data = fread($fh, filesize($file));
-    fclose($fh);
+    $lines = file($file);
+
+    $post = array(
+        'tags' => '',
+        'template' => 'post',
+        'index' => 'true'
+    );
+    $dataLines = 0;
+    foreach($lines as $line) {
+        if(strlen(trim($line)) == 0)
+            break;
+        
+        $lineParts = explode(':', $line, 2);
+        if(count($lineParts) == 2) {
+            $post[trim(strtolower($lineParts[0]))] = trim($lineParts[1]);
+            $dataLines++;
+        }
+    }
     
-    /* 
-     * Split the file into 4 parts:
-     * Title, Date, Tags, and Post content
-     * 
-     * Each piece of inormation starts on a new line in that order.
-     */
-    $parts = explode("\n", $data, 4);
-    $post = array();
-    $post['title'] = $parts[0];
-    $post['slug'] = create_slug($parts[0]);
-    $post['date_raw'] = $parts[1];
-    $post['date'] = date('M j, Y', strtotime($parts[1]));
-    $post['tags'] = explode(',', $parts[2]);
-    $post['content'] = Markdown($parts[3]);
+    $post['slug'] = create_slug($post['title']);
+    $post['content'] = Markdown(implode(array_slice($lines, $dataLines)));
+    
     
     return $post;
 }
